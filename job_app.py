@@ -8,49 +8,57 @@ model = joblib.load('JOB_CHANGE.pkl')
 # Page config
 st.set_page_config(page_title="Job Switch Prediction", page_icon="🧑‍💼", layout="centered")
 
-# Custom CSS for advanced design
+# Insert Background Image and Advanced CSS
 st.markdown("""
     <style>
-    body {background-color: #F0F8FF;}
+    body {
+        background-image: url("https://images.unsplash.com/photo-1531746790731-6c087fecd65a");
+        background-size: cover;
+        background-attachment: fixed;
+    }
     .title {
         font-size:45px;
         font-weight:bold;
-        color:#2C3E50;
+        color:#ffffff;
         text-align: center;
         padding: 20px;
+        text-shadow: 2px 2px 8px #000000;
     }
     .subtitle {
         font-size:20px;
-        color:#1ABC9C;
+        color:#F1C40F;
         text-align: center;
         margin-bottom: 30px;
+        text-shadow: 1px 1px 5px #000000;
     }
     .input-container {
-        background-color: #E8F6F3;
+        background-color: rgba(255, 255, 255, 0.85);
         padding: 30px;
         border-radius: 15px;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
     }
     .banner {
         position: fixed;
         bottom: 0;
+        left: 0;
         width: 100%;
-        background: linear-gradient(90deg, #00c6ff, #0072ff);
-        color: white;
-        font-weight: bold;
-        font-size: 20px;
-        padding: 10px;
-        white-space: nowrap;
+        height: 50px;
+        background: linear-gradient(90deg, #ff0080, #7928ca);
         overflow: hidden;
+        white-space: nowrap;
+        z-index: 9999;
     }
     .banner-text {
         display: inline-block;
+        font-weight: bold;
+        font-size: 24px;
+        color: white;
         padding-left: 100%;
         animation: marquee 15s linear infinite;
     }
     @keyframes marquee {
-        0%   { transform: translate(0, 0); }
-        100% { transform: translate(-100%, 0); }
+        0% { transform: translateX(0%); }
+        100% { transform: translateX(-100%); }
     }
     </style>
 """, unsafe_allow_html=True)
@@ -59,21 +67,17 @@ st.markdown("""
 st.markdown('<div class="title">🚀 Job Switch Prediction System 🚀</div>', unsafe_allow_html=True)
 st.markdown('<div class="subtitle">Predict if a candidate is likely to switch jobs based on real data</div>', unsafe_allow_html=True)
 
-st.write("")
+# Input container
+st.markdown('<div class="input-container">', unsafe_allow_html=True)
+st.write("### Enter Candidate Details:")
 
-# Input container box
-with st.container():
-    st.markdown('<div class="input-container">', unsafe_allow_html=True)
-    st.write("### Enter Candidate Details:")
-
-    commute_time = st.number_input("🚗 Commute Time (in minutes)", min_value=0, max_value=300, value=30)
-    job_satisfaction = st.selectbox("😊 Job Satisfaction Level", [1, 3, 5], help="1=Excellent, 3=Average, 5=Very Bad")
-    years_in_current_job = st.number_input("📅 Number of Years in Current Job", min_value=0, max_value=50, value=2)
-    salary_expectation = st.number_input("💰 Salary Expectation (₹)", min_value=0, max_value=1000000, value=20000)
-    wlb_input = st.selectbox("⚖️ Work-Life Balance (WLB)", ["Yes", "No"])
-    wlb = 1 if wlb_input == "Yes" else 0
-
-    st.markdown('</div>', unsafe_allow_html=True)
+commute_time = st.number_input("🚗 Commute Time (in minutes)", min_value=0, max_value=300, value=30)
+job_satisfaction = st.selectbox("😊 Job Satisfaction Level", [1, 3, 5], help="1=Excellent, 3=Average, 5=Very Bad")
+years_in_current_job = st.number_input("📅 Number of Years in Current Job", min_value=0, max_value=50, value=2)
+salary_expectation = st.number_input("💰 Salary Expectation (₹)", min_value=0, max_value=1000000, value=20000)
+wlb_input = st.selectbox("⚖️ Work-Life Balance (WLB)", ["Yes", "No"])
+wlb = 1 if wlb_input == "Yes" else 0
+st.markdown('</div>', unsafe_allow_html=True)
 
 # Prepare input
 input_data = pd.DataFrame({
@@ -86,7 +90,7 @@ input_data = pd.DataFrame({
 
 input_array = input_data.to_numpy()
 
-# Prediction
+# Predict button
 if st.button("🎯 Predict Job Switch"):
     prediction = model.predict(input_array)
     prediction_proba = model.predict_proba(input_array)
@@ -100,9 +104,9 @@ if st.button("🎯 Predict Job Switch"):
 
     st.write("**Probability of switching:** {:.2f}%".format(prediction_proba[0][1]*100))
 
-# Running banner at bottom
+# Full screen running banner
 st.markdown("""
     <div class="banner">
-        <div class="banner-text">🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀</div>
+        <div class="banner-text">🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀</div>
     </div>
 """, unsafe_allow_html=True)
