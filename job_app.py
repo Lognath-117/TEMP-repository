@@ -21,11 +21,11 @@ st.markdown("""
         padding-top: 0rem;
     }
     .title-box {
-        background: rgba(255, 255, 255, 0.85);
-        padding: 20px;
-        border-radius: 15px;
-        margin: 20px;
-        margin-bottom: 10px;
+        background: rgba(255, 255, 255, 0.90);
+        padding: 40px;
+        border-radius: 20px;
+        margin: 20px auto;
+        max-width: 700px;
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
         text-align: center;
     }
@@ -41,18 +41,10 @@ st.markdown("""
         margin-top: 10px;
         text-shadow: 1px 1px 2px #aaaaaa;
     }
-    .input-container {
-        background-color: rgba(255, 255, 255, 0.85);
-        padding: 30px;
-        border-radius: 15px;
-        margin: 20px;
-        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
-    }
     .input-title {
         font-size: 24px;
         font-weight: bold;
-        margin-bottom: 20px;
-        text-align: center;
+        margin: 30px 0 10px 0;
         color: #000000;
     }
     .banner {
@@ -81,26 +73,25 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Top header (title box)
+# Full box: header + input title + inputs
 st.markdown("""
     <div class="title-box">
         <div class="title-text">🚀 AI-powered Career Prediction System 🚀</div>
         <div class="subtitle-text">Built with Machine Learning for smarter job predictions</div>
         <div class="subtitle-text">Project by Lognath, Thanmanan, Rithick</div>
-    </div>
+        <div class="input-title">Enter Candidate Details:</div>
 """, unsafe_allow_html=True)
 
-# Input form container
-st.markdown('<div class="input-container">', unsafe_allow_html=True)
-st.markdown('<div class="input-title">Enter Candidate Details:</div>', unsafe_allow_html=True)
-
+# Inputs start inside the same box
 commute_time = st.number_input("🚗 Commute Time (in minutes)", min_value=0, max_value=300, value=30)
 job_satisfaction = st.selectbox("😊 Job Satisfaction Level", [1, 3, 5], help="1=Excellent, 3=Average, 5=Very Bad")
 years_in_current_job = st.number_input("📅 Number of Years in Current Job", min_value=0, max_value=50, value=2)
 salary_expectation = st.number_input("💰 Salary Expectation (₹)", min_value=0, max_value=1000000, value=20000)
 wlb_input = st.selectbox("⚖️ Work-Life Balance (WLB)", ["Yes", "No"])
 wlb = 1 if wlb_input == "Yes" else 0
-st.markdown('</div>', unsafe_allow_html=True)
+
+# Close the white box div
+st.markdown("</div>", unsafe_allow_html=True)
 
 # Prepare input
 input_data = pd.DataFrame({
@@ -127,7 +118,7 @@ if st.button("🎯 Predict Job Switch"):
 
     st.write("**Probability of switching:** {:.2f}%".format(prediction_proba[0][1]*100))
 
-# Running banner
+# Running banner at full width
 st.markdown("""
     <div class="banner">
         <div class="banner-text">🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀</div>
