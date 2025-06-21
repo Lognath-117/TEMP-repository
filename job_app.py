@@ -8,7 +8,7 @@ model = joblib.load('JOB_CHANGE.pkl')
 # Page config
 st.set_page_config(page_title="Job Switch Prediction", page_icon="🧑‍💼", layout="centered")
 
-# Background image insertion
+# Background image insertion + full styling
 st.markdown("""
     <style>
     .stApp {
@@ -17,25 +17,34 @@ st.markdown("""
         background-attachment: fixed;
         background-position: center;
     }
-    .title {
-        font-size:45px;
-        font-weight:bold;
-        color:#ffffff;
-        text-align: center;
-        padding: 20px;
-        text-shadow: 2px 2px 8px #000000;
+    main .block-container {
+        padding-top: 0rem;
     }
-    .subtitle {
-        font-size:20px;
-        color:#F1C40F;
+    .title-box {
+        background: rgba(255, 255, 255, 0.85);
+        padding: 20px;
+        border-radius: 15px;
+        margin: 20px;
+        box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
         text-align: center;
-        margin-bottom: 30px;
-        text-shadow: 1px 1px 5px #000000;
+    }
+    .title-text {
+        font-size: 32px;
+        font-weight: bold;
+        color: #000000;
+        text-shadow: 1px 1px 3px #aaaaaa;
+    }
+    .subtitle-text {
+        font-size: 18px;
+        color: #333333;
+        margin-top: 10px;
+        text-shadow: 1px 1px 2px #aaaaaa;
     }
     .input-container {
         background-color: rgba(255, 255, 255, 0.85);
         padding: 30px;
         border-radius: 15px;
+        margin: 30px;
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
     }
     .banner {
@@ -64,9 +73,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Title
-st.markdown('<div class="title">🚀 Job Switch Prediction System 🚀</div>', unsafe_allow_html=True)
-st.markdown('<div class="subtitle">Predict if a candidate is likely to switch jobs based on real data</div>', unsafe_allow_html=True)
+# White box creative header
+st.markdown("""
+    <div class="title-box">
+        <div class="title-text">🚀 AI-powered Career Prediction System 🚀</div>
+        <div class="subtitle-text">Built with Machine Learning for smarter job predictions</div>
+        <div class="subtitle-text">Project by Lognath, Thanmanan, Rithick</div>
+    </div>
+""", unsafe_allow_html=True)
 
 # Input container
 st.markdown('<div class="input-container">', unsafe_allow_html=True)
