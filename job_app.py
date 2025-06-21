@@ -8,7 +8,7 @@ model = joblib.load('JOB_CHANGE.pkl')
 # Page config
 st.set_page_config(page_title="Job Switch Prediction", page_icon="🧑‍💼", layout="centered")
 
-# Background image insertion + full styling
+# Styling for full page
 st.markdown("""
     <style>
     .stApp {
@@ -25,7 +25,7 @@ st.markdown("""
         padding: 20px;
         border-radius: 15px;
         margin: 20px;
-        margin-bottom: 0px;
+        margin-bottom: 10px;
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
         text-align: center;
     }
@@ -47,6 +47,13 @@ st.markdown("""
         border-radius: 15px;
         margin: 20px;
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    .input-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #000000;
     }
     .banner {
         position: fixed;
@@ -74,7 +81,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Creative header (white box)
+# Top header (title box)
 st.markdown("""
     <div class="title-box">
         <div class="title-text">🚀 AI-powered Career Prediction System 🚀</div>
@@ -83,9 +90,9 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Directly open input container after header
+# Input form container
 st.markdown('<div class="input-container">', unsafe_allow_html=True)
-st.write("### Enter Candidate Details:")
+st.markdown('<div class="input-title">Enter Candidate Details:</div>', unsafe_allow_html=True)
 
 commute_time = st.number_input("🚗 Commute Time (in minutes)", min_value=0, max_value=300, value=30)
 job_satisfaction = st.selectbox("😊 Job Satisfaction Level", [1, 3, 5], help="1=Excellent, 3=Average, 5=Very Bad")
@@ -120,7 +127,7 @@ if st.button("🎯 Predict Job Switch"):
 
     st.write("**Probability of switching:** {:.2f}%".format(prediction_proba[0][1]*100))
 
-# Full screen running banner
+# Running banner
 st.markdown("""
     <div class="banner">
         <div class="banner-text">🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀</div>
