@@ -84,7 +84,7 @@ st.markdown("""
 
 # Inputs start inside the same box
 commute_time = st.number_input("🚗 Commute Time (in minutes)", min_value=0, max_value=300, value=30)
-job_satisfaction = st.selectbox("😊 Job Satisfaction Level", [1, 3, 5], help="1=Excellent, 3=Average, 5=Very Bad")
+job_satisfaction = st.selectbox("😊 Job Satisfaction Level", [1, 2, 3, 4, 5], help="1=Excellent, 3=Average, 5=Very Bad")
 years_in_current_job = st.number_input("📅 Number of Years in Current Job", min_value=0, max_value=50, value=2)
 salary_expectation = st.number_input("💰 Salary Expectation (₹)", min_value=0, max_value=1000000, value=20000)
 wlb_input = st.selectbox("⚖️ Work-Life Balance (WLB)", ["Yes", "No"])
