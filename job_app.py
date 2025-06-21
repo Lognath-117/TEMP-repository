@@ -1,50 +1,31 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import joblib
 
 # Load the trained model
 model = joblib.load('JOB_CHANGE.pkl')
 
-# Streamlit app
 st.title("Job Switch Prediction")
 
-st.write("""
-### Enter candidate details to predict job change probability:
-""")
+st.write("### Enter candidate information:")
 
-# Collect input features from user
-gender = st.selectbox("Gender", ["Male", "Female", "Other"])
-relevant_experience = st.selectbox("Relevant Experience", ["Has Relevant Experience", "No Relevant Experience"])
-enrolled_university = st.selectbox("Enrolled University", ["no_enrollment", "Full time course", "Part time course"])
-education_level = st.selectbox("Education Level", ["Primary School", "High School", "Graduate", "Masters", "Phd"])
-major_discipline = st.selectbox("Major Discipline", ["STEM", "Business Degree", "Arts", "Humanities", "Other", "No Major"])
-experience = st.selectbox("Years of Experience", ['<1','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','>20'])
-company_size = st.selectbox("Company Size", ["<10","10-49","50-99","100-500","500-999","1000-4999","5000-9999","10000+"])
-company_type = st.selectbox("Company Type", ["Private", "Public", "Government", "Nonprofit", "Startup", "Other"])
-last_new_job = st.selectbox("Last New Job (Years)", ["never", "1", "2", "3", "4", ">4"])
-training_hours = st.number_input("Training Hours", min_value=0, max_value=500, value=20)
+# Collect inputs that exactly match training features
+commute_time = st.number_input("COMMUTE TIME? (note : in minutes)", min_value=0, max_value=300, value=30)
+job_satisfaction = st.selectbox("JOB SATISFACTION LEVEL (1-EXCELLENT, 3-AVERAGE, 5-VERY BAD)", [1, 3, 5])
+years_in_current_job = st.number_input("NUMBER OF YEARS IN CURRENT JOB?", min_value=0, max_value=50, value=2)
+salary_expectation = st.number_input("SALARY EXPECTATION? (NOTE: LIKE THIS 20000)", min_value=0, max_value=1000000, value=20000)
+wlb = st.selectbox("WLB (Work-Life Balance)", ["Excellent", "Good", "Average", "Poor"])
 
-# You may need to preprocess these inputs exactly like your model expects.
-# For now, let's assume you have a preprocessing pipeline inside the model or you manually do it here.
-
-# Create a DataFrame from user inputs
+# Prepare the input as dataframe
 input_data = pd.DataFrame({
-    'gender': [gender],
-    'relevant_experience': [relevant_experience],
-    'enrolled_university': [enrolled_university],
-    'education_level': [education_level],
-    'major_discipline': [major_discipline],
-    'experience': [experience],
-    'company_size': [company_size],
-    'company_type': [company_type],
-    'last_new_job': [last_new_job],
-    'training_hours': [training_hours]
+    "COMMUTE TIME? (note : in minutes)": [commute_time],
+    "JOB SATISFACTION LEVEL (1-EXCELLENT,3-AVERAGE,5-VERY BAD)": [job_satisfaction],
+    "NUMBER OF YEARS IN CURRENT JOB?": [years_in_current_job],
+    "SALARY EXPECTATION? (NOTE: LIKE THIS 20000)": [salary_expectation],
+    "WLB": [wlb]
 })
 
-# Prediction button
-if st.button('Predict'):
-    # This assumes your model pipeline handles preprocessing
+if st.button("Predict"):
     prediction = model.predict(input_data)
     prediction_proba = model.predict_proba(input_data)
 
@@ -52,5 +33,5 @@ if st.button('Predict'):
         st.success("The candidate is likely to switch jobs.")
     else:
         st.info("The candidate is unlikely to switch jobs.")
-
-    st.write("**Probability of switching:** {:.2f}%".format(prediction_proba[0][1] * 100))
+        
+    st.write("**Probability of switching:** {:.2f}%".format(prediction_proba[0][1]*100))
