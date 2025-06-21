@@ -121,6 +121,6 @@ if st.button("🎯 Predict Job Switch"):
 # Running banner at full width
 st.markdown("""
     <div class="banner">
-        <div class="banner-text">🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀 PROJECT DONE BY Lognath, Thanmanan, Rithick 🚀</div>
+        <div class="banner-text"> 💕PROJECT DONE BY Lognath, Thanmanan, Rithick ❤️ PROJECT DONE BY Lognath, Thanmanan, Rithick </div>
     </div>
 """, unsafe_allow_html=True)
