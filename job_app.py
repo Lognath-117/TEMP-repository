@@ -12,7 +12,7 @@ st.set_page_config(page_title="Job Switch Prediction", page_icon="🧑‍💼", 
 st.markdown("""
     <style>
     body {
-        background-image: url("https://images.unsplash.com/photo-1531746790731-6c087fecd65a");
+        background-image: url("https://images.app.goo.gl/QYEJtSMJNWR4pYC99");
         background-size: cover;
         background-attachment: fixed;
     }
