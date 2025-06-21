@@ -1,13 +1,9 @@
 import streamlit as st
 import pandas as pd
 import joblib
-import pyttsx3
 
 # Load trained model
 model = joblib.load('JOB_CHANGE.pkl')
-
-# Initialize pyttsx3 engine
-engine = pyttsx3.init()
 
 # Page config
 st.set_page_config(page_title="Job Switch Prediction", page_icon="🧑‍💼", layout="centered")
@@ -101,19 +97,13 @@ if st.button("🎯 Predict Job Switch"):
     prediction_proba = model.predict_proba(input_array)
 
     if prediction[0] == 1:
-        result_text = "✅ The candidate is likely to switch jobs."
-        st.success(result_text)
+        st.success("✅ The candidate is likely to switch jobs.")
         st.balloons()
     else:
-        result_text = "❌ The candidate is unlikely to switch jobs."
-        st.info(result_text)
+        st.info("❌ The candidate is unlikely to switch jobs.")
         st.snow()
 
     st.write("**Probability of switching:** {:.2f}%".format(prediction_proba[0][1]*100))
-
-    # Voice Output
-    engine.say(result_text)
-    engine.runAndWait()
 
 # Full screen running banner
 st.markdown("""
