@@ -14,7 +14,10 @@ commute_time = st.number_input("COMMUTE TIME? (note : in minutes)", min_value=0,
 job_satisfaction = st.selectbox("JOB SATISFACTION LEVEL (1-EXCELLENT, 3-AVERAGE, 5-VERY BAD)", [1, 3, 5])
 years_in_current_job = st.number_input("NUMBER OF YEARS IN CURRENT JOB?", min_value=0, max_value=50, value=2)
 salary_expectation = st.number_input("SALARY EXPECTATION? (NOTE: LIKE THIS 20000)", min_value=0, max_value=1000000, value=20000)
-wlb = st.selectbox("WLB (Work-Life Balance)", ["Excellent", "Good", "Average", "Poor"])
+wlb_input = st.selectbox("Work-Life Balance (WLB)", ["Yes", "No"])
+
+# Map Yes/No to 1/0
+wlb = 1 if wlb_input == "Yes" else 0
 
 # Prepare the input as dataframe
 input_data = pd.DataFrame({
