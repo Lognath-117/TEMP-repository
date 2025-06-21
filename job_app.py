@@ -25,6 +25,7 @@ st.markdown("""
         padding: 20px;
         border-radius: 15px;
         margin: 20px;
+        margin-bottom: 0px;
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
         text-align: center;
     }
@@ -44,7 +45,7 @@ st.markdown("""
         background-color: rgba(255, 255, 255, 0.85);
         padding: 30px;
         border-radius: 15px;
-        margin: 30px;
+        margin: 20px;
         box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
     }
     .banner {
@@ -73,7 +74,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# White box creative header
+# Creative header (white box)
 st.markdown("""
     <div class="title-box">
         <div class="title-text">🚀 AI-powered Career Prediction System 🚀</div>
@@ -82,7 +83,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Input container
+# Directly open input container after header
 st.markdown('<div class="input-container">', unsafe_allow_html=True)
 st.write("### Enter Candidate Details:")
 
