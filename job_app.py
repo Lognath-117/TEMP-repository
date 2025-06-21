@@ -8,13 +8,14 @@ model = joblib.load('JOB_CHANGE.pkl')
 # Page config
 st.set_page_config(page_title="Job Switch Prediction", page_icon="🧑‍💼", layout="centered")
 
-# Insert Background Image and Advanced CSS
+# Background image insertion
 st.markdown("""
     <style>
-    body {
-        background-image: url("https://images.app.goo.gl/QYEJtSMJNWR4pYC99");
+    .stApp {
+        background-image: url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d");
         background-size: cover;
         background-attachment: fixed;
+        background-position: center;
     }
     .title {
         font-size:45px;
