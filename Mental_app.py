@@ -1,107 +1,54 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import os
 
-# Load the trained model
-model = joblib.load("mental_health_model.pkl")
+st.set_page_config(page_title="Simple Mental Health Predictor", page_icon="🧠")
 
-# 🌐 Set page configuration
-st.set_page_config(page_title="WellMind - Mental Health Predictor", page_icon="🧠")
+st.title("🧠 Simple Mental Health Risk Checker")
 
-# Title and description
-st.title("🧠 WellMind: Mental Health Risk Predictor")
-st.markdown("""
-Welcome to **WellMind**, an intelligent tool designed to assess the likelihood of needing mental health support based on your workplace environment and personal factors.
-Please fill out the form below to get a prediction.
-""")
+# ✅ Load model safely
+model_path = "mental_health_model.pkl"
 
-# 🎛️ Input function
-def get_user_input():
-    age = st.slider("Age", 18, 65, 25)
-    gender = st.selectbox("Gender", ["Male", "Female", "Other"])
-    self_employed = st.selectbox("Are you self-employed?", ["Yes", "No"])
-    family_history = st.selectbox("Family history of mental illness?", ["Yes", "No"])
-    work_interfere = st.selectbox("Does mental health affect your work?", ["Often", "Rarely", "Never", "Sometimes"])
-    no_employees = st.selectbox("Number of employees", ["1-5", "6-25", "26-100", "100-500", "500-1000", "More than 1000"])
-    remote_work = st.selectbox("Do you work remotely?", ["Yes", "No"])
-    tech_company = st.selectbox("Do you work in tech?", ["Yes", "No"])
-    benefits = st.selectbox("Mental health benefits offered?", ["Yes", "No", "Don't know"])
-    care_options = st.selectbox("Are you aware of care options from employer?", ["Yes", "No", "Not sure"])
-    wellness_program = st.selectbox("Wellness programs available?", ["Yes", "No", "Don't know"])
-    seek_help = st.selectbox("Is it easy to seek help?", ["Yes", "No", "Don't know"])
-    anonymity = st.selectbox("Is anonymity protected?", ["Yes", "No", "Don't know"])
-    leave = st.selectbox("Ease of taking mental health leave", ["Very easy", "Somewhat easy", "Somewhat difficult", "Very difficult", "Don't know"])
-    mental_health_consequence = st.selectbox("Consequences of discussing mental health?", ["Yes", "No", "Maybe"])
-    phys_health_consequence = st.selectbox("Consequences of discussing physical health?", ["Yes", "No", "Maybe"])
-    coworkers = st.selectbox("Comfortable with coworkers?", ["Yes", "No", "Some of them"])
-    supervisor = st.selectbox("Comfortable with supervisor?", ["Yes", "No", "Some of them"])
-    mental_health_interview = st.selectbox("Willing to discuss mental health in interview?", ["Yes", "No", "Maybe"])
-    phys_health_interview = st.selectbox("Willing to discuss physical health in interview?", ["Yes", "No", "Maybe"])
-    mental_vs_physical = st.selectbox("Mental health as important as physical?", ["Yes", "No", "Don't know"])
-    obs_consequence = st.selectbox("Observed consequences of disclosure?", ["Yes", "No"])
-    country = st.selectbox("Country", ["India", "United States", "Canada", "Other"])
+if not os.path.exists(model_path):
+    st.error("❌ Model file not found. Please make sure 'mental_health_model.pkl' is in the same folder.")
+    st.stop()
 
-    # Return as dataframe
-    return pd.DataFrame({
-        'Age': [age],
-        'Gender': [gender],
-        'self_employed': [self_employed],
-        'family_history': [family_history],
-        'work_interfere': [work_interfere],
-        'no_employees': [no_employees],
-        'remote_work': [remote_work],
-        'tech_company': [tech_company],
-        'benefits': [benefits],
-        'care_options': [care_options],
-        'wellness_program': [wellness_program],
-        'seek_help': [seek_help],
-        'anonymity': [anonymity],
-        'leave': [leave],
-        'mental_health_consequence': [mental_health_consequence],
-        'phys_health_consequence': [phys_health_consequence],
-        'coworkers': [coworkers],
-        'supervisor': [supervisor],
-        'mental_health_interview': [mental_health_interview],
-        'phys_health_interview': [phys_health_interview],
-        'mental_vs_physical': [mental_vs_physical],
-        'obs_consequence': [obs_consequence],
-        'Country': [country]
-    })
+try:
+    model = joblib.load(model_path)
+except Exception as e:
+    st.error(f"❌ Failed to load model: {e}")
+    st.stop()
 
-# 🚀 Manual encoding to match training setup
-def encode_input(df):
-    for col in df.columns:
-        if df[col].dtype == 'object':
-            df[col] = df[col].astype('category').cat.codes
-    return df
+# 🎛️ Minimal Inputs (only most impactful)
+age = st.slider("Age", 18, 65, 30)
+gender = st.selectbox("Gender", ["Male", "Female", "Other"])
+family_history = st.selectbox("Family history of mental illness?", ["Yes", "No"])
+work_interfere = st.selectbox("Does mental health affect your work?", ["Often", "Sometimes", "Rarely", "Never"])
+benefits = st.selectbox("Does your employer offer mental health benefits?", ["Yes", "No", "Don't know"])
 
-# Collect user input
-input_df = get_user_input()
+# 🧮 Simple encoding (same as during training)
+input_dict = {
+    "Age": age,
+    "Gender": {"Male": 1, "Female": 0, "Other": 2}[gender],
+    "family_history": {"Yes": 1, "No": 0}[family_history],
+    "work_interfere": {"Often": 3, "Sometimes": 1, "Rarely": 2, "Never": 0}[work_interfere],
+    "benefits": {"Yes": 2, "No": 0, "Don't know": 1}[benefits],
+}
 
-# Encode it
-encoded_input = encode_input(input_df)
+# Match model columns
+input_df = pd.DataFrame([input_dict])
 
-# ✅ Match columns with training model's features
-expected_features = model.feature_names_in_
+# Handle missing model features
+for col in model.feature_names_in_:
+    if col not in input_df.columns:
+        input_df[col] = 0
+input_df = input_df[model.feature_names_in_]
 
-# Add any missing columns as zero
-for col in expected_features:
-    if col not in encoded_input.columns:
-        encoded_input[col] = 0
-
-# Reorder columns to match model training
-encoded_input = encoded_input[expected_features]
-
-# 📊 Predict
-if st.button("🔍 Predict Mental Health Risk"):
-    prediction = model.predict(encoded_input)[0]
+# 🧠 Predict
+if st.button("Predict Mental Health Risk"):
+    prediction = model.predict(input_df)[0]
     if prediction == 1:
-        st.error("🔴 You may benefit from mental health support.")
-        st.markdown("💡 Consider speaking with a mental health professional or using employee support programs.")
+        st.error("🔴 You may need mental health support.")
     else:
-        st.success("🟢 You are unlikely to need mental health intervention.")
-        st.markdown("🎉 Keep maintaining a healthy lifestyle and positive mental wellness!")
-
-# Footer
-st.markdown("<hr>", unsafe_allow_html=True)
-st.caption("Made with 💙 by WellMind AI | Mental Health Awareness Tool")
+        st.success("🟢 You're unlikely to need mental health support.")
