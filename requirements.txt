@@ -2,6 +2,7 @@ streamlit
 pandas
 numpy
 scikit-learn
+streamlit_lottie
 sentence-transformers
 transformers
 torch
